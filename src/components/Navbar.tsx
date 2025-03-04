@@ -41,7 +41,10 @@ const Navbar = () => {
   hover:bg-blue-50 transition"
         >
           <Search size={18} strokeWidth={2} className="text-blue-900" />
-          <span>Search</span>
+          <span>
+            <input type="text" placeholder="Search" />
+            
+            </span>
         </button>
 
       </div>

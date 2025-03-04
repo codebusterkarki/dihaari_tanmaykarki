@@ -1,65 +1,44 @@
 import Navbar from '../components/Navbar';
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { useState, useEffect } from 'react';
+import FilterOptions from "@/components/FilterOptions";
+import JobCard from "@/components/JobCard";
+import Leaderboard from "@/components/Leaderboard";
 
-const HomePage = () => {
-    const { user, error, isLoading } = useUser();
-    const [Data, setData] = useState<any>([]);
-    const [loadingData, setLoadingData] = useState<boolean>(false);
 
-    useEffect(() => {
-        // If user is logged in, fetch the Data
-        if (user) {
-            const fetchData = async () => {
-                setLoadingData(true);
-                try {
-                    const response = await fetch('/api/data'); // Call the server-side API
-                    if (response.ok) {
-                        const data = await response.json();
-                        setData(data);
-                    } else {
-                        console.error('Failed to fetch Data');
-                    }
-                } catch (error) {
-                    console.error('Error fetching Data:', error);
-                } finally {
-                    setLoadingData(false);
-                }
-            };
 
-            fetchData(); // Call the function to fetch Data
-        }
-    }, [user]); // Trigger the fetch when the user logs in
-
-    if (isLoading) return <div>Loading...</div>
-    if (error) return <div>{error.message}</div>
-
-    if (user) {
-        return (
-            <div className="p-4">
-                <Navbar />
-                <div>
-                    Welcome {user.name}! <a href='/api/auth/logout'>Logout</a>
-                </div>
-                {/* Display the fetched Data */}
-                {loadingData ? (
-                    <div>Loading Data...</div>
-                ) : (
-                    <ul>
-                        {Data.length > 0 ? (
-                            Data.map((show: any) => <li key={show.id}>{show.name}</li>)
-                        ) : (
-                            <div>No Data found</div>
-                        )}
-                    </ul>
-                )}
-            </div>
-        );
-    }
-
-    return (
-        <a href='/api/auth/login'>Login</a>
-    );
-};
-
-export default HomePage;
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <div className="flex">
+        <FilterOptions />
+        <main className="flex-1 p-6 space-y-4">
+          <JobCard
+            title="Digital Marketing"
+            company="Tiyana Corporation"
+            location="Mumbai"
+            duration="3 months"
+            salary="15,000 - 20,000"
+            posted="3 weeks"
+          />
+          <JobCard
+            title="Digital Marketing"
+            company="Tiyana Corporation"
+            location="Mumbai"
+            duration="3 months"
+            salary="15,000 - 20,000"
+            posted="Just now"
+          />
+           <JobCard
+            title="Digital Marketing"
+            company="Tiyana Corporation"
+            location="Mumbai"
+            duration="3 months"
+            salary="15,000 - 20,000"
+            posted="Just now"
+          />
+        </main>
+        <Leaderboard />
+      </div>
+    </div>
+  );
+}
